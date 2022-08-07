@@ -7,7 +7,7 @@ Window {
     height: 480
     visible: true
     title: qsTr("Hello World")
-
+    x: 100
 
     Button {
         x: 20
@@ -16,7 +16,14 @@ Window {
         onClicked: Qt.quit()
     }
 
+    Button {
+        x: 50
+        y: 50
+        text: "call"
+        onClicked: mybest.echo()
+    }
+
     Text {
-        text: qsTr("sdfsdfsf")
+        text: qsTr(mybest.echo())
     }
 }

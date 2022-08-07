@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         qml.qrc
         timer.h
         timer.cpp
+        eyetimer.h eyetimer.cpp
+        notification.h notification.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -3,7 +3,10 @@
 #include <KNotifications/knotification.h>
 #include <QStandardPaths>
 #include <iostream>
-
+#include <QQmlContext>
+#include "timer.h"
+#include "eyetimer.h"
+#include <QQuickView>
 
 int main(int argc, char *argv[])
 {
@@ -20,6 +23,8 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
+    engine.load(url);
+
     KNotification *notification = new KNotification("notification");
     notification->setText("jdfghj");
     notification->setComponentName("eye-protector");
@@ -28,10 +33,16 @@ int main(int argc, char *argv[])
 
     std::cout << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation).toStdString() << std::endl;
 
-    notification->sendEvent();
+//    notification->sendEvent();
 
+    Timer timer(20*60);
+    timer.start();
+    QQmlContext *rootContext = engine.rootContext();
+    rootContext->setContextProperty("classA", &timer);
 
-    engine.load(url);
+    EyeTimer t;
+    QObject::connect(&timer, &Timer::tick, &t, &EyeTimer::tick);
+
 
     return app.exec();
 }
