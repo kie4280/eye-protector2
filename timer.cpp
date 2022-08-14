@@ -1,6 +1,7 @@
 #include "timer.h"
 #include <QCoreApplication>
 #include <QDebug>
+#include <QQuickView>
 
 
 Timer::Timer(int duration, int resting):work_time(duration), rest_time(resting) {
@@ -8,6 +9,7 @@ Timer::Timer(int duration, int resting):work_time(duration), rest_time(resting) 
   tick_timer->setInterval(1000);
   internal_counter = work_time;
   connect(tick_timer, &QTimer::timeout, this, &Timer::seconds);
+
 }
 
 Timer::~Timer() {
@@ -18,18 +20,19 @@ Timer::~Timer() {
 
 void Timer::pause() {
   state = TIMER_STATE::Pause;
+  emit stateChanged(TIMER_STATE::Pause);
 }
 
 void Timer::start() {
   state = TIMER_STATE::Ticking;
   if (!tick_timer->isActive()) tick_timer->start();
   qDebug("start");
+  emit stateChanged(TIMER_STATE::Ticking);
 }
 
 
 void Timer::seconds() {
 
-  emit tick(internal_counter);
   switch (state) {
 
     case TIMER_STATE::Pause:
@@ -59,6 +62,11 @@ void Timer::seconds() {
     default:
       break;
     }
+  emit tick(internal_counter);
+}
+
+QList<int> Timer::getWorkRestTime() const {
+  return {work_time, rest_time};
 }
 
 

@@ -23,22 +23,23 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
 
+    Timer timer(5, 3);
+    QQmlContext *rootContext = engine.rootContext();
+    rootContext->setContextProperty("ticktimer", &timer);
+    qmlRegisterUncreatableType<Timer>("TickTimer", 1, 0, "Ticktimer", "ENUM");
     engine.load(url);
 
-    KNotification *notification = new KNotification("notification");
-    notification->setText("jdfghj");
-    notification->setComponentName("eye-protector");
-    notification->setUrgency(KNotification::HighUrgency);
-    notification->setAutoDelete(true);
+//    KNotification *notification = new KNotification("notification");
+//    notification->setText("jdfghj");
+//    notification->setComponentName("eye-protector");
+//    notification->setUrgency(KNotification::HighUrgency);
+//    notification->setAutoDelete(true);
 
-    std::cout << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation).toStdString() << std::endl;
+//    std::cout << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation).toStdString() << std::endl;
 
 //    notification->sendEvent();
 
-    Timer timer(20*60);
-    timer.start();
-    QQmlContext *rootContext = engine.rootContext();
-    rootContext->setContextProperty("classA", &timer);
+
 
     EyeTimer t;
     QObject::connect(&timer, &Timer::tick, &t, &EyeTimer::tick);

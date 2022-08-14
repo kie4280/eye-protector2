@@ -3,35 +3,43 @@
 
 #include <QTimer>
 #include <QObject>
+#include <QQmlEngine>
 
 
-enum TIMER_STATE {
-  Initial,
-  Pause,
-  Ticking,
-  Timeout
-};
 
 class Timer: public QObject
 {
 
-    Q_OBJECT
-//    Q_PROPERTY(int seconds READ seconds WRITE setSeconds NOTIFY secondsChanged)
+  Q_OBJECT
+  QML_UNCREATABLE("singleton")
+
+public:
+  enum TIMER_STATE {
+    Initial,
+    Pause,
+    Ticking,
+    Timeout
+  };
+
+  Q_ENUM(TIMER_STATE)
+
 public:
 
-    QTimer *tick_timer;
-    Timer(int duration = 20 * 60, int resting = 5 * 60);
-    ~Timer();
-    void pause();
-    void postpone();
-    void start();
+  QTimer *tick_timer;
+  Timer(int duration = 20 * 60, int resting = 5 * 60);
+  ~Timer();
+  Q_INVOKABLE QList<int> getWorkRestTime() const;
+
+public slots:
+  void pause();
+  void start();
 
 private slots:
-    void seconds();
+  void seconds();
 
 signals:
-    void tick(int);
-    void stateChanged(int);
+  void tick(int);
+  void stateChanged(int);
 
 private:
   int internal_counter = 0;
