@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>Main.qml</file>
         <file>Setting.qml</file>
+        <file>Notification.qml</file>
+        <file>TrayIcon.qml</file>
+        <file>timer.png</file>
     </qresource>
 </RCC>

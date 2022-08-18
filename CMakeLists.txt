@@ -20,10 +20,9 @@ find_package(KF5Notifications)
 set(PROJECT_SOURCES
         main.cpp
         qml.qrc
-        timer.h
-        timer.cpp
-        eyetimer.h eyetimer.cpp
-        notification.h notification.cpp
+        eyetimer.h
+        eyetimer.cpp
+
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -1,21 +1,52 @@
-#ifndef EYETIMER_H
-#define EYETIMER_H
+#ifndef TIMER_H
+#define TIMER_H
 
+#include <QTimer>
 #include <QObject>
+#include <QQmlEngine>
 
-class EyeTimer : public QObject
+
+
+class Timer: public QObject
 {
-    Q_OBJECT
+
+  Q_OBJECT
+  QML_UNCREATABLE("singleton")
+
 public:
-    explicit EyeTimer(QObject *parent = nullptr);
+  enum TIMER_STATE {
+    Initial,
+    Pause,
+    Ticking,
+    Timeout
+  };
+
+  Q_ENUM(TIMER_STATE)
+
+public:
+
+  QTimer *tick_timer;
+  Timer(int duration = 20 * 60, int resting = 5 * 60);
+  ~Timer();
+  Q_INVOKABLE QList<int> getWorkRestTime() const;
+
+public slots:
+  void pause();
+  void start();
+
+private slots:
+  void seconds();
 
 signals:
+  void tick(int);
+  void stateChanged(int);
 
+private:
+  int internal_counter = 0;
+  int state = TIMER_STATE::Pause;
+  int work_time, rest_time;
 
-   public slots:
-        void echo();
-        void tick(int);
 
 };
 
-#endif // EYETIMER_H
+#endif // TIMER_H

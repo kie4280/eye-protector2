@@ -1,49 +1,44 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
 #include <KNotifications/knotification.h>
-#include <QStandardPaths>
-#include <iostream>
 #include <QQmlContext>
-#include "timer.h"
 #include "eyetimer.h"
 #include <QQuickView>
+
+void kde_send_notification() {
+  //    KNotification *notification = new KNotification("notification");
+  //    notification->setText("jdfghj");
+  //    notification->setComponentName("eye-protector");
+  //    notification->setUrgency(KNotification::HighUrgency);
+  //    notification->setAutoDelete(true);
+
+  //    std::cout << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation).toStdString() << std::endl;
+
+  //    notification->sendEvent();
+
+
+}
+
 
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
-    QGuiApplication app(argc, argv);
+  QApplication app(argc, argv);
+  QQmlApplicationEngine engine;
+  Timer timer(5, 3);
+  //    QQuickView *mainwindow = new QQuickView;
+  qmlRegisterUncreatableType<Timer>("TickTimer", 1, 0, "Ticktimer", "single");
+  //    mainwindow->rootContext()->setContextProperty("ticktimer", &timer);
+  //    mainwindow->setSource(QStringLiteral("qrc:/Main.qml"));
+  engine.rootContext()->setContextProperty("ticktimer", &timer);
+  engine.load(QStringLiteral("qrc:/TrayIcon.qml"));
 
-    QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
+  engine.load(QStringLiteral("qrc:/Main.qml"));
 
-    Timer timer(5, 3);
-    QQmlContext *rootContext = engine.rootContext();
-    rootContext->setContextProperty("ticktimer", &timer);
-    qmlRegisterUncreatableType<Timer>("TickTimer", 1, 0, "Ticktimer", "ENUM");
-    engine.load(url);
-
-//    KNotification *notification = new KNotification("notification");
-//    notification->setText("jdfghj");
-//    notification->setComponentName("eye-protector");
-//    notification->setUrgency(KNotification::HighUrgency);
-//    notification->setAutoDelete(true);
-
-//    std::cout << QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation).toStdString() << std::endl;
-
-//    notification->sendEvent();
+//  QObject *trayicon = engine.rootObjects()[0];
 
 
-
-    EyeTimer t;
-    QObject::connect(&timer, &Timer::tick, &t, &EyeTimer::tick);
-
-
-    return app.exec();
+  return app.exec();
 }
