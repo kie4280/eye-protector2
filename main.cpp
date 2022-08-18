@@ -4,6 +4,7 @@
 #include <QQmlContext>
 #include "eyetimer.h"
 #include <QQuickView>
+#include "controller.h"
 
 void kde_send_notification() {
   //    KNotification *notification = new KNotification("notification");
@@ -20,6 +21,7 @@ void kde_send_notification() {
 }
 
 
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -28,16 +30,17 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
   Timer timer(5, 3);
+  Controller ctrl;
   //    QQuickView *mainwindow = new QQuickView;
-  qmlRegisterUncreatableType<Timer>("TickTimer", 1, 0, "Ticktimer", "single");
+  qmlRegisterUncreatableType<Timer>("my.ticktimer", 1, 0, "Ticktimer", "single");
+  qmlRegisterUncreatableType<Controller>("my.controller", 1, 0, "StateCtrl", "single");
   //    mainwindow->rootContext()->setContextProperty("ticktimer", &timer);
   //    mainwindow->setSource(QStringLiteral("qrc:/Main.qml"));
   engine.rootContext()->setContextProperty("ticktimer", &timer);
-  engine.load(QStringLiteral("qrc:/TrayIcon.qml"));
-
+  engine.rootContext()->setContextProperty("StateCtrl", &ctrl);
   engine.load(QStringLiteral("qrc:/Main.qml"));
-
-//  QObject *trayicon = engine.rootObjects()[0];
+  QObject::connect(&timer, &Timer::stateChanged, &ctrl, &Controller::timerChanged);
+  //  QObject *trayicon = engine.rootObjects()[0];
 
 
   return app.exec();

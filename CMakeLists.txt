@@ -22,7 +22,8 @@ set(PROJECT_SOURCES
         qml.qrc
         eyetimer.h
         eyetimer.cpp
-
+        controller.h
+        controller.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

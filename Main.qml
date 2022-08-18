@@ -1,13 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
-import TickTimer 1.0
+import my.ticktimer 1.0
+import my.controller 1.0
 import Qt.labs.platform 1.1
 
 Window {
-    id: mainwindow
-    x: 50
-    y: 50
+    id: root
     width: 640
     height: 480
     visible: true
@@ -27,52 +26,93 @@ Window {
         }
 
         function onStateChanged(st) {
-            mainwindow.state = Qt.binding(() => {
-                                              return st
-                                          })
-            if (mainwindow.state === Ticktimer.Pause) {
+            root.state = Qt.binding(() => {
+                                        return st
+                                    })
+            if (root.state === Ticktimer.Pause) {
+                root.visible = true
                 butt1.visible = true
                 butt1.text = qsTr("Start")
-            } else if (mainwindow.state === Ticktimer.Ticking) {
+            } else if (root.state === Ticktimer.Ticking) {
                 butt1.visible = true
                 butt1.text = "Pause"
             } else {
                 butt1.text = "Postpone"
+                root.visible = true
             }
         }
     }
 
-    Button {
-        id: butt1
-        x: parent.width / 2 - width / 2
-        y: parent.height / 2 - height / 2
-        width: 100
-        height: 100
+    onActiveChanged: {
+        console.log("Pop up:", active)
+        if (!active && root.state == Ticktimer.Ticking) {
+            visible = false
+        }
+    }
 
-        background: Rectangle {
-            color: parent.hovered ? "dimgray" : "gray"
-            Text {
-                anchors.centerIn: parent
-                text: butt1.text
+    Item {
+        id: mainwindow
+        anchors.centerIn: parent
+        Button {
+            id: butt1
+            x: mainwindow.width / 2 - width / 2
+            y: mainwindow.height / 2 - height / 2
+            width: 100
+            height: 100
+
+            background: Rectangle {
+                color: parent.hovered ? "dimgray" : "gray"
+                Text {
+                    anchors.centerIn: parent
+                    text: butt1.text
+                    color: "white"
+                }
+                radius: width * 0.5
             }
-            radius: width * 0.5
+
+            text: qsTr("Start")
+
+            onClicked: {
+                if (root.state === Ticktimer.Pause) {
+                    ticktimer.start()
+                } else if (root.state === Ticktimer.Ticking) {
+                    ticktimer.pause()
+                }
+            }
         }
 
-        text: qsTr("Start")
+        Text {
+            x: parent.width / 2 - width / 2
+            y: parent.height / 2 - height / 2 - butt1.height
+            id: seconds_text
+            text: root.work_time
+        }
+    }
 
-        onClicked: {
-            if (mainwindow.state === Ticktimer.Pause) {
-                ticktimer.start()
-            } else if (mainwindow.state === Ticktimer.Ticking) {
-                ticktimer.pause()
+    Notification {
+        id: notif
+        property bool opened: false
+        Connections {
+            target: trayicon
+            function onActivated(reason) {
+                console.log("activated")
+
+                switch (reason) {
+                case SystemTrayIcon.Trigger:
+                    root.visible = true
+                    if (!notif.visible) {
+                        notif.visible = true
+                        console.log("open notif")
+                    }
+                    break
+                default:
+                    break
+                }
             }
         }
     }
 
-    Text {
-        x: parent.width / 2 - width / 2
-        y: parent.height / 2 - height / 2 - butt1.height
-        id: seconds_text
-        text: mainwindow.work_time
+    TrayIcon {
+        id: trayicon
     }
 }
