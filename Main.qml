@@ -14,34 +14,50 @@ Window {
     flags: {
         Qt.Window | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
     }
-    color: "dimgray"
+    color: "#303338"
     property int state: Ticktimer.Pause
-    readonly property int work_time: ticktimer.getWorkRestTime()[0]
-    readonly property int rest_time: ticktimer.getWorkRestTime()[1]
+    property int work_time: ticktimer.getWorkRestTime()[0]
+    property int rest_time: ticktimer.getWorkRestTime()[1]
 
     Connections {
         target: ticktimer
-        function onTick(sec) {
-            seconds_text.text = sec
-        }
 
         function onStateChanged(st) {
             root.state = Qt.binding(() => {
                                         return st
                                     })
-            if (root.state === Ticktimer.Pause) {
+
+            switch (root.state) {
+            case Ticktimer.Pause:
                 root.visible = true
-                butt1.visible = true
-                butt1.text = qsTr("Start")
-            } else if (root.state === Ticktimer.Ticking) {
-                butt1.visible = true
-                butt1.text = "Pause"
-            } else {
-                butt1.text = "Postpone"
+                break
+            case Ticktimer.Ticking:
+                break
+            case Ticktimer.Timeout:
                 root.visible = true
+                break
+            default:
+                break
             }
         }
     }
+
+    Connections {
+        target: trayicon
+
+        function onActivated(reason) {
+            console.log("trayicon:", reason)
+            switch (reason) {
+            case SystemTrayIcon.Trigger:
+                root.visible = true
+                break
+            default:
+                break
+            }
+        }
+    }
+
+    MouseArea {}
 
     onActiveChanged: {
         console.log("Pop up:", active)
@@ -50,66 +66,10 @@ Window {
         }
     }
 
-    Item {
-        id: mainwindow
-        anchors.centerIn: parent
-        Button {
-            id: butt1
-            x: mainwindow.width / 2 - width / 2
-            y: mainwindow.height / 2 - height / 2
-            width: 100
-            height: 100
+    RoundProgButton {
 
-            background: Rectangle {
-                color: parent.hovered ? "dimgray" : "gray"
-                Text {
-                    anchors.centerIn: parent
-                    text: butt1.text
-                    color: "white"
-                }
-                radius: width * 0.5
-            }
-
-            text: qsTr("Start")
-
-            onClicked: {
-                if (root.state === Ticktimer.Pause) {
-                    ticktimer.start()
-                } else if (root.state === Ticktimer.Ticking) {
-                    ticktimer.pause()
-                }
-            }
-        }
-
-        Text {
-            x: parent.width / 2 - width / 2
-            y: parent.height / 2 - height / 2 - butt1.height
-            id: seconds_text
-            text: root.work_time
-        }
-    }
-
-    Notification {
-        id: notif
-        property bool opened: false
-        Connections {
-            target: trayicon
-            function onActivated(reason) {
-                console.log("activated")
-
-                switch (reason) {
-                case SystemTrayIcon.Trigger:
-                    root.visible = true
-                    if (!notif.visible) {
-                        notif.visible = true
-                        console.log("open notif")
-                    }
-                    break
-                default:
-                    break
-                }
-            }
-        }
+        id: rp_butt
+        radius: 250
     }
 
     TrayIcon {

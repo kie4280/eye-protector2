@@ -1,6 +1,5 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <KNotifications/knotification.h>
 #include <QQmlContext>
 #include "eyetimer.h"
 #include <QQuickView>
@@ -29,7 +28,7 @@ int main(int argc, char *argv[])
 #endif
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
-  Timer timer(5, 3);
+  Timer timer(25 * 60, 5 * 60);
   Controller ctrl;
   //    QQuickView *mainwindow = new QQuickView;
   qmlRegisterUncreatableType<Timer>("my.ticktimer", 1, 0, "Ticktimer", "single");
@@ -39,6 +38,7 @@ int main(int argc, char *argv[])
   engine.rootContext()->setContextProperty("ticktimer", &timer);
   engine.rootContext()->setContextProperty("StateCtrl", &ctrl);
   engine.load(QStringLiteral("qrc:/Main.qml"));
+  engine.load(QStringLiteral("qrc:/Notification.qml"));
   QObject::connect(&timer, &Timer::stateChanged, &ctrl, &Controller::timerChanged);
   //  QObject *trayicon = engine.rootObjects()[0];
 

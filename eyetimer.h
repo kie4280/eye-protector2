@@ -15,7 +15,7 @@ class Timer: public QObject
 
 public:
   enum TIMER_STATE {
-    Initial,
+    Warn_close,
     Pause,
     Ticking,
     Timeout

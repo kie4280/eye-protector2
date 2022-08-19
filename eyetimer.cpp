@@ -20,6 +20,7 @@ Timer::~Timer() {
 
 void Timer::pause() {
   state = TIMER_STATE::Pause;
+  tick_timer->start();
   emit stateChanged(TIMER_STATE::Pause);
 }
 
