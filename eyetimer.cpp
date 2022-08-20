@@ -4,27 +4,28 @@
 #include <QQuickView>
 
 
-Timer::Timer(int duration, int resting):work_time(duration), rest_time(resting) {
+EyeTimer::EyeTimer(int duration, int resting):work_time(duration), rest_time(resting) {
   tick_timer = new QTimer();
+  tick_timer->setTimerType(Qt::CoarseTimer);
   tick_timer->setInterval(1000);
   internal_counter = work_time;
-  connect(tick_timer, &QTimer::timeout, this, &Timer::seconds);
+  connect(tick_timer, &QTimer::timeout, this, &EyeTimer::qtimer_tick);
 
 }
 
-Timer::~Timer() {
-  disconnect(tick_timer, &QTimer::timeout, this, &Timer::seconds);
+EyeTimer::~EyeTimer() {
+  disconnect(tick_timer, &QTimer::timeout, this, &EyeTimer::qtimer_tick);
   tick_timer->stop();
   delete tick_timer;
 }
 
-void Timer::pause() {
+void EyeTimer::pause() {
   state = TIMER_STATE::Pause;
   tick_timer->start();
   emit stateChanged(TIMER_STATE::Pause);
 }
 
-void Timer::start() {
+void EyeTimer::start() {
   state = TIMER_STATE::Ticking;
   if (!tick_timer->isActive()) tick_timer->start();
   qDebug("start");
@@ -32,7 +33,7 @@ void Timer::start() {
 }
 
 
-void Timer::seconds() {
+void EyeTimer::qtimer_tick() {
 
   switch (state) {
 
@@ -51,6 +52,9 @@ void Timer::seconds() {
           internal_counter = rest_time;
           emit stateChanged(TIMER_STATE::Timeout);
         }
+      if (internal_counter <= 10) {
+          emit warnClose(internal_counter);
+        }
       break;
     case TIMER_STATE::Timeout:
       --internal_counter;
@@ -66,7 +70,7 @@ void Timer::seconds() {
   emit tick(internal_counter);
 }
 
-QList<int> Timer::getWorkRestTime() const {
+QList<int> EyeTimer::getWorkRestTime() const {
   return {work_time, rest_time};
 }
 

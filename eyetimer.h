@@ -7,7 +7,7 @@
 
 
 
-class Timer: public QObject
+class EyeTimer: public QObject
 {
 
   Q_OBJECT
@@ -15,7 +15,6 @@ class Timer: public QObject
 
 public:
   enum TIMER_STATE {
-    Warn_close,
     Pause,
     Ticking,
     Timeout
@@ -26,8 +25,8 @@ public:
 public:
 
   QTimer *tick_timer;
-  Timer(int duration = 20 * 60, int resting = 5 * 60);
-  ~Timer();
+  EyeTimer(int duration = 20 * 60, int resting = 5 * 60);
+  ~EyeTimer();
   Q_INVOKABLE QList<int> getWorkRestTime() const;
 
 public slots:
@@ -35,11 +34,12 @@ public slots:
   void start();
 
 private slots:
-  void seconds();
+  void qtimer_tick();
 
 signals:
-  void tick(int);
-  void stateChanged(int);
+  void tick(int seconds);
+  void stateChanged(int state);
+  void warnClose(int seconds);
 
 private:
   int internal_counter = 0;
