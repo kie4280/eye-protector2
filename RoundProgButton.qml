@@ -7,7 +7,8 @@ import QtGraphicalEffects 1.15
 Item {
     id: progressbutton
     anchors.centerIn: parent
-
+    width: progressbutton.radius
+    height: progressbutton.radius
     property int state: Ticktimer.Pause
     property int work_time: ticktimer.getWorkRestTime()[0]
     property int rest_time: ticktimer.getWorkRestTime()[1]
@@ -70,13 +71,6 @@ Item {
                 break
             }
         }
-    }
-    Rectangle {
-        color: "#303338"
-        width: progressbutton.radius
-        height: progressbutton.radius
-        radius: width * 0.5
-        anchors.centerIn: parent
     }
 
     Item {

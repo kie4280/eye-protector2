@@ -27,6 +27,7 @@ Window {
             switch (root.state) {
             case Ticktimer.Pause:
                 root.visible_lock = true
+                delayhide.stop()
                 root.opacity = 1
                 root.x = 0
                 root.y = 0
