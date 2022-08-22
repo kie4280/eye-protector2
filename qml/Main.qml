@@ -10,7 +10,7 @@ Window {
     height: Screen.height
     title: qsTr("Eye protector")
     flags: {
-        Qt.Window | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+        Qt.Tool | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
     }
     color: "#303338"
     visible: mainwindow.visible_lock || hoverdetector.hovered

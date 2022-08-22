@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
 //      mainwindow->show();
   engine.rootContext()->setContextProperty("ticktimer", &timer);
 
-  engine.load(QStringLiteral("qrc:/Main.qml"));
-  engine.load(QStringLiteral("qrc:/Notification.qml"));
+  engine.load(QStringLiteral("qrc:/qml/Main.qml"));
+  engine.load(QStringLiteral("qrc:/qml/Notification.qml"));
 
   //  QObject *trayicon = engine.rootObjects()[0];
 

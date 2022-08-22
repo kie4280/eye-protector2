@@ -15,13 +15,12 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Widgets)
 
 
-set(PROJECT_SOURCES
-        main.cpp
-        qml.qrc
-        eyetimer.h
-        eyetimer.cpp
-
-)
+file(GLOB PROJECT_SOURCES
+        "${PROJECT_SOURCE_DIR}/src/*.h"
+        "${PROJECT_SOURCE_DIR}/src/*.cpp"
+        "${PROJECT_SOURCE_DIR}/src/*.c"
+        "${PROJECT_SOURCE_DIR}/qml.qrc"
+        )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(eye-protector

@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>Main.qml</file>
-        <file>Setting.qml</file>
-        <file>Notification.qml</file>
-        <file>TrayIcon.qml</file>
+        <file>qml/Main.qml</file>
+        <file>qml/Notification.qml</file>
+        <file>qml/RoundProgButton.qml</file>
+        <file>qml/Setting.qml</file>
+        <file>qml/TrayIcon.qml</file>
         <file>timer.png</file>
-        <file>RoundProgButton.qml</file>
     </qresource>
 </RCC>
