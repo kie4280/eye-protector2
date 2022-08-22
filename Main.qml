@@ -5,15 +5,15 @@ import my.ticktimer 1.0
 import Qt.labs.platform 1.1
 
 Window {
-    id: root
+    id: mainwindow
     width: Screen.width
     height: Screen.height
     title: qsTr("Eye protector")
     flags: {
-        Qt.Popup | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+        Qt.Window | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
     }
     color: "#303338"
-    visible: root.visible_lock || hoverdetector.hovered
+    visible: mainwindow.visible_lock || hoverdetector.hovered
     property int state: Ticktimer.Pause
     property int work_time: ticktimer.getWorkRestTime()[0]
     property int rest_time: ticktimer.getWorkRestTime()[1]
@@ -23,35 +23,43 @@ Window {
         target: ticktimer
 
         function onStateChanged(st) {
-            root.state = st
-            switch (root.state) {
+            mainwindow.state = st
+            switch (mainwindow.state) {
             case Ticktimer.Pause:
-                root.visible_lock = true
+                mainwindow.visible_lock = true
                 delayhide.stop()
-                root.opacity = 1
-                root.x = 0
-                root.y = 0
-                root.width = Screen.width
-                root.height = Screen.height
+                mainwindow.opacity = 1
+                mainwindow.x = 0
+                mainwindow.y = 0
+                mainwindow.width = Screen.width
+                mainwindow.height = Screen.height
                 break
             case Ticktimer.Ticking:
                 delayhide.start()
-                root.opacity = 0.8
-                root.width = 300
-                root.height = 300
-                root.x = Screen.width - (root.width + 40)
-                root.y = Screen.height - (root.height + 50)
+                mainwindow.opacity = 0.8
+                mainwindow.width = 300
+                mainwindow.height = 300
+                mainwindow.x = Screen.width - (mainwindow.width + 40)
+                mainwindow.y = Screen.height - (mainwindow.height + 50)
                 break
             case Ticktimer.Timeout:
-                root.visible_lock = true
-                root.opacity = 1
-                root.x = 0
-                root.y = 0
-                root.width = Screen.width
-                root.height = Screen.height
+                mainwindow.visible_lock = true
+                mainwindow.opacity = 1
+                mainwindow.x = 0
+                mainwindow.y = 0
+                mainwindow.width = Screen.width
+                mainwindow.height = Screen.height
                 break
             default:
                 break
+            }
+        }
+
+        function onWarnClose(sec) {
+            if (mainwindow.state === Ticktimer.Ticking) {
+                noti.visible = true
+            } else {
+                noti.visible = false
             }
         }
     }
@@ -77,7 +85,7 @@ Window {
         interval: 3000
         repeat: false
         onTriggered: {
-            root.visible_lock = false
+            mainwindow.visible_lock = false
         }
     }
 
@@ -88,13 +96,19 @@ Window {
             console.log("trayicon:", reason)
             switch (reason) {
             case SystemTrayIcon.Trigger:
-                root.visible_lock = true
+                mainwindow.visible_lock = true
                 delayhide.start()
                 break
             default:
                 break
             }
         }
+    }
+
+    Notification {
+        id: noti
+        hasProgress: true
+        text: "Time to wrap up!"
     }
 
     TrayIcon {

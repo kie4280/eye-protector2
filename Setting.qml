@@ -9,4 +9,8 @@ Window {
     visible: false
     x: Screen.width - width / 2 - 100
     y: Screen.height - height / 2 - 200
+
+    function readJson() {}
+
+    function writeJson(obj) {}
 }

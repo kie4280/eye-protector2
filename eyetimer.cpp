@@ -52,7 +52,7 @@ void EyeTimer::qtimer_tick() {
           internal_counter = rest_time;
           emit stateChanged(TIMER_STATE::Timeout);
         }
-      if (internal_counter <= 10) {
+      if (internal_counter <= 20) {
           emit warnClose(internal_counter);
         }
       break;

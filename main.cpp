@@ -12,13 +12,14 @@ int main(int argc, char *argv[])
 #endif
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
-  EyeTimer timer(25 , 10);
+  EyeTimer timer(20 , 10);
 
-  //    QQuickView *mainwindow = new QQuickView;
+//      QQuickView *mainwindow = new QQuickView(&engine, nullptr);
   qmlRegisterUncreatableType<EyeTimer>("my.ticktimer", 1, 0, "Ticktimer", "single");
 
-  //    mainwindow->rootContext()->setContextProperty("ticktimer", &timer);
-  //    mainwindow->setSource(QStringLiteral("qrc:/Main.qml"));
+//      mainwindow->rootContext()->setContextProperty("ticktimer", &timer);
+//      mainwindow->setSource(QStringLiteral("qrc:/Main.qml"));
+//      mainwindow->show();
   engine.rootContext()->setContextProperty("ticktimer", &timer);
 
   engine.load(QStringLiteral("qrc:/Main.qml"));

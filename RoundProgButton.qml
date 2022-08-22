@@ -216,9 +216,9 @@ Item {
         text: qsTr("Start")
 
         onClicked: {
-            if (root.state === Ticktimer.Pause) {
+            if (mainwindow.state === Ticktimer.Pause) {
                 ticktimer.start()
-            } else if (root.state === Ticktimer.Ticking) {
+            } else if (mainwindow.state === Ticktimer.Ticking) {
                 ticktimer.pause()
             }
         }
