@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import my.ticktimer 1.0
 import QtQuick.Shapes 1.15
-import QtGraphicalEffects 1.15
+
 
 Item {
     id: progressbutton
@@ -60,14 +60,14 @@ Item {
             switch (progressbutton.state) {
             case Ticktimer.Pause:
                 butt1.visible = true
-                butt1.text = qsTr("Start")
+                butt1.state_text = qsTr("Start")
                 break
             case Ticktimer.Ticking:
                 butt1.visible = true
-                butt1.text = qsTr("Pause")
+                butt1.state_text = qsTr("Pause")
                 break
             default:
-                butt1.text = qsTr("Postpone")
+                butt1.state_text = qsTr("Postpone")
                 break
             }
         }
@@ -87,10 +87,6 @@ Item {
         property real maxValue: 100
         property real value: 100
         property int samples: 12
-        // Drop Shadow
-        property bool enableDropShadow: false
-        property color dropShadowColor: "#20000000"
-        property int dropShadowRadius: 10
         // Bg Circle
         property color bgColor: "transparent"
         property color bgStrokeColor: "#7e7e7e"
@@ -99,26 +95,12 @@ Item {
         property color progressColor: "#55aaff"
         property int progressWidth: 16
 
-        // Internal Properties/Functions
-        QtObject {
-            id: internal
-
-            property Component dropShadow: DropShadow {
-                color: progress.dropShadowColor
-                fast: true
-                verticalOffset: 0
-                horizontalOffset: 0
-                samples: progress.samples
-                radius: progress.dropShadowRadius
-            }
-        }
 
         Shape {
             id: shape
             anchors.fill: parent
             layer.enabled: true
             layer.samples: progress.samples
-            layer.effect: progress.enableDropShadow ? internal.dropShadow : null
 
             ShapePath {
                 id: pathBG
@@ -163,6 +145,7 @@ Item {
         height: progressbutton.radius - 50
 
         property string second_text: sec2time(progressbutton.work_time)
+        property string state_text: qsTr("Start")
 
         background: Rectangle {
             id: circ
@@ -203,7 +186,7 @@ Item {
 
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: butt1.text
+                    text: butt1.state_text
                     color: "white"
                     font {
                         bold: true
@@ -213,7 +196,6 @@ Item {
             }
         }
 
-        text: qsTr("Start")
 
         onClicked: {
             if (mainwindow.state === Ticktimer.Pause) {

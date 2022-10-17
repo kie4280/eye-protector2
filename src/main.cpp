@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 #endif
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
-  EyeTimer timer(20 , 10);
+  EyeTimer timer(20 * 60 , 5 * 60);
 
 //      QQuickView *mainwindow = new QQuickView(&engine, nullptr);
   qmlRegisterUncreatableType<EyeTimer>("my.ticktimer", 1, 0, "Ticktimer", "single");

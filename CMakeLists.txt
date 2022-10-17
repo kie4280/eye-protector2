@@ -11,9 +11,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Quick Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Widgets)
-
+find_package(Qt6 REQUIRED COMPONENTS Core Quick Widgets)
+#find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Widgets)
+qt_standard_project_setup()
 
 file(GLOB PROJECT_SOURCES
         "${PROJECT_SOURCE_DIR}/src/*.h"
@@ -22,28 +22,12 @@ file(GLOB PROJECT_SOURCES
         "${PROJECT_SOURCE_DIR}/qml.qrc"
         )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(eye-protector
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET eye-protector APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(eye-protector SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(eye-protector
-          ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
+add_executable(eye-protector ${PROJECT_SOURCES})
 
 target_compile_definitions(eye-protector
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
