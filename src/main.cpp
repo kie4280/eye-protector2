@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   QQmlApplicationEngine engine;
   EyeTimer timer(20 * 60 , 5 * 60);
+  timer.read_json();
 
 //      QQuickView *mainwindow = new QQuickView(&engine, nullptr);
   qmlRegisterUncreatableType<EyeTimer>("my.ticktimer", 1, 0, "Ticktimer", "single");
@@ -21,9 +22,9 @@ int main(int argc, char *argv[])
 //      mainwindow->setSource(QStringLiteral("qrc:/Main.qml"));
 //      mainwindow->show();
   engine.rootContext()->setContextProperty("ticktimer", &timer);
-
   engine.load(QStringLiteral("qrc:/qml/Main.qml"));
-  engine.load(QStringLiteral("qrc:/qml/Notification.qml"));
+//  engine.load(QStringLiteral("qrc:/qml/Notification.qml"));
+//  engine.load(QStringLiteral("qrc:/qml/Setting.qml"));
 
   //  QObject *trayicon = engine.rootObjects()[0];
 
