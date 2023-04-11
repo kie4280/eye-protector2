@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import my.ticktimer 1.0
 import QtQuick.Shapes 1.15
+import com.github.kie4280.eyeprotector2.plugin 1.0 as Plugin
 
 Item {
   // copied from https://github.com/Wanderson-Magalhaes/Circular_ProgressBar
@@ -14,9 +14,9 @@ Item {
   // General
   property bool roundCap: true
   property int startAngle: -90
-  property int maxValue: ticktimer.work_time
-  property int value: ticktimer.work_time
-  property int state: Ticktimer.Pause
+  property int maxValue: 0
+  property int value: 0
+  property int state: 0
   property int radius: 200
   property int samples: 4
   // Bg Circle
@@ -27,7 +27,8 @@ Item {
   property color progressColor: "#55aaff"
   property int progressWidth: 16
 
-  Behavior on value {
+  // unfinished animation
+  Behavior on value  {
     SmoothedAnimation {
       velocity: 100
     }
@@ -81,39 +82,38 @@ Item {
     height: progress.radius - 50
 
     function sec2time(sec) {
-      let secs = sec % 60
-      sec = Math.floor(sec / 60)
-      let mins = sec % 60
-      let hs = Math.floor(sec / 60)
-      let d = new Date(0)
-      d.setHours(hs)
-      d.setSeconds(secs)
-      d.setMinutes(mins)
-
-      return d.toTimeString().substring(0, 8)
+      let secs = sec % 60;
+      sec = Math.floor(sec / 60);
+      let mins = sec % 60;
+      let hs = Math.floor(sec / 60);
+      let d = new Date(0);
+      d.setHours(hs);
+      d.setSeconds(secs);
+      d.setMinutes(mins);
+      return d.toTimeString().substring(0, 8);
     }
 
     property string second_text: {
       switch (progress.state) {
-      case Ticktimer.Pause:
-      case Ticktimer.Ticking:
-      case Ticktimer.Timeout:
-        return sec2time(progress.value)
+      case Plugin.Eyetimer.Pause:
+      case Plugin.Eyetimer.Ticking:
+      case Plugin.Eyetimer.Timeout:
+        return sec2time(progress.value);
       default:
-        return qsTr("Invalid")
+        return qsTr("Invalid");
       }
     }
 
     property string state_text: {
       switch (progress.state) {
-      case Ticktimer.Pause:
-        return qsTr("Start")
-      case Ticktimer.Ticking:
-        return qsTr("Pause")
-      case Ticktimer.Timeout:
-        return qsTr("Postpone")
+      case Plugin.Eyetimer.Pause:
+        return qsTr("Start");
+      case Plugin.Eyetimer.Ticking:
+        return qsTr("Pause");
+      case Plugin.Eyetimer.Timeout:
+        return qsTr("Postpone");
       default:
-        return qsTr("Invalid")
+        return qsTr("Invalid");
       }
     }
 
@@ -165,10 +165,10 @@ Item {
     }
 
     onClicked: {
-      if (progress.state === Ticktimer.Pause) {
-        ticktimer.start()
-      } else if (progress.state === Ticktimer.Ticking) {
-        ticktimer.pause()
+      if (progress.state === Plugin.Eyetimer.Pause) {
+        eyetimer.start();
+      } else if (progress.state === Plugin.Eyetimer.Ticking) {
+        eyetimer.pause();
       }
     }
   }

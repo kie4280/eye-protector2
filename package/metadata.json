@@ -1,0 +1,22 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "s041327@gmail.com",
+        "Name": "kie4280"
+      }
+    ],
+    "Category": "System Information",
+    "Description": "A eye saving widget",
+    "Icon": "clock",
+    "Id": "com.github.kie4280.eyeprotector2",
+    "Name": "eyeprotector",
+    "ServiceTypes": [
+      "Plasma/Applet"
+    ],
+    "Version": "1",
+    "Website": "https://github.com/kie4280/eyeprotector2"
+  },
+  "X-Plasma-API": "declarativeappletscript",
+  "X-Plasma-MainScript": "ui/main.qml"
+}

@@ -1,50 +1,31 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.16)
 
-project(eye-protector VERSION 0.1 LANGUAGES CXX)
+project(eye-protector2)
+ 
+find_package(ECM 1.4.0 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings NO_POLICY_SCOPE)
+include(FeatureSummary)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-
-find_package(Qt6 REQUIRED COMPONENTS Core Quick Widgets)
-#find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Quick Widgets)
-qt_standard_project_setup()
-
-file(GLOB PROJECT_SOURCES
-        "${PROJECT_SOURCE_DIR}/src/*.h"
-        "${PROJECT_SOURCE_DIR}/src/*.cpp"
-        "${PROJECT_SOURCE_DIR}/src/*.c"
-        "${PROJECT_SOURCE_DIR}/qml.qrc"
-        )
-
-
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET eye-protector APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-add_executable(eye-protector ${PROJECT_SOURCES})
-
-target_compile_definitions(eye-protector
-  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-target_link_libraries(eye-protector
-  PRIVATE  Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Widgets)
-#[[KF5::Notifications]]
-set_target_properties(eye-protector PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+find_package(KF5 REQUIRED COMPONENTS
+    Plasma
 )
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_import_qml_plugins(eye-protector)
-    qt_finalize_executable(eye-protector)
-endif()
+find_package(Qt5 CONFIG REQUIRED COMPONENTS
+    Core
+    Quick
+    Widgets
+    Qml
+)
 
+# plasmoid
+# TODO: adapt "org.kde.plasma" here & elsewhere if needed (see README)
+plasma_install_package(package com.github.kie4280.eyeprotector2)
+
+# qml extension plugin
+add_subdirectory(plugin)
+
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

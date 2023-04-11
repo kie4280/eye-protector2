@@ -20,48 +20,48 @@ EyeTimer::~EyeTimer() {
 }
 
 void EyeTimer::pause() {
-  state = TIMER_STATE::Pause;
+  timer_state = TIMER_STATE::Pause;
   tick_timer->start();
   emit timer_stateChanged();
 }
 
 void EyeTimer::start() {
-  state = TIMER_STATE::Ticking;
+  timer_state = TIMER_STATE::Ticking;
   if (!tick_timer->isActive())
     tick_timer->start();
   emit timer_stateChanged();
 }
 
-void EyeTimer::read_json() {
-  QFile readfile(QStringLiteral("eye-protector-conf.json"));
-  if (!readfile.exists()) {
-    qInfo("config file doesn't exist");
-    QJsonObject ob;
-    ob["rest_sec"] = 300;
-    ob["use_sec"] = 1200;
-    ob["postpone_sec"] = 300;
-    settings_json.setObject(ob);
-    return;
-  } else if (!readfile.open(QIODevice::ReadOnly)) {
-    qWarning("cannot read config file");
-    return;
-  }
+// void EyeTimer::read_json() {
+//   QFile readfile(QStringLiteral("eye-protector-conf.json"));
+//   if (!readfile.exists()) {
+//     qInfo("config file doesn't exist");
+//     QJsonObject ob;
+//     ob["rest_sec"] = 300;
+//     ob["use_sec"] = 1200;
+//     ob["postpone_sec"] = 300;
+//     settings_json.setObject(ob);
+//     return;
+//   } else if (!readfile.open(QIODevice::ReadOnly)) {
+//     qWarning("cannot read config file");
+//     return;
+//   }
 
-  settings_json.fromJson(readfile.readAll());
-}
+//   settings_json.fromJson(readfile.readAll());
+// }
 
-void EyeTimer::save_json(QJsonObject obj) {
-  QFile savefile(QStringLiteral("eye-protector-conf.json"));
-  if (!savefile.open(QIODevice::WriteOnly)) {
-    qWarning("Cannot save file");
-    return;
-  }
-  savefile.write(QJsonDocument(obj).toJson());
-}
+// void EyeTimer::save_json(QJsonObject obj) {
+//   QFile savefile(QStringLiteral("eye-protector-conf.json"));
+//   if (!savefile.open(QIODevice::WriteOnly)) {
+//     qWarning("Cannot save file");
+//     return;
+//   }
+//   savefile.write(QJsonDocument(obj).toJson());
+// }
 
 void EyeTimer::eyetimer_tick() {
 
-  switch (state) {
+  switch (timer_state) {
 
   case TIMER_STATE::Pause:
 
@@ -74,7 +74,7 @@ void EyeTimer::eyetimer_tick() {
   case TIMER_STATE::Ticking:
     --internal_counter;
     if (internal_counter <= 0) {
-      state = TIMER_STATE::Timeout;
+      timer_state = TIMER_STATE::Timeout;
       internal_counter = rest_time;
       emit timer_stateChanged();
     }
@@ -85,7 +85,7 @@ void EyeTimer::eyetimer_tick() {
   case TIMER_STATE::Timeout:
     --internal_counter;
     if (internal_counter <= 0) {
-      state = TIMER_STATE::Pause;
+      timer_state = TIMER_STATE::Pause;
       internal_counter = work_time;
       emit timer_stateChanged();
     }
@@ -95,3 +95,4 @@ void EyeTimer::eyetimer_tick() {
   }
   emit tick(internal_counter);
 }
+

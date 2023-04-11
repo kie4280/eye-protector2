@@ -10,7 +10,7 @@ Window {
   height: Screen.height
   title: qsTr("Eye protector")
   flags: {
-    Qt.Window | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+    Qt.Window | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint;
   }
   color: "#303338"
   //  color: "#00000000"
@@ -23,55 +23,56 @@ Window {
     target: ticktimer
 
     function onTick(sec) {
-      timer_tick = sec
+      timer_tick = sec;
     }
 
     function onTimer_stateChanged() {
-      console.debug("screen param", Screen.width, Screen.height)
-      console.debug("x, y", mainwindow.x, mainwindow.y)
+      console.debug("screen param", Screen.width, Screen.height);
+      console.debug("x, y", mainwindow.x, mainwindow.y);
       switch (ticktimer.timer_state) {
       case Ticktimer.Pause:
-        mainwindow.visible_lock = true
-        delayhide.stop()
+        mainwindow.visible_lock = true;
+        delayhide.stop();
         //        mainwindow.opacity = 1
-        mainwindow.width = Screen.width / 2
-        mainwindow.height = Screen.height / 2
-        mainwindow.x = 0
-        mainwindow.y = 0
-        break
+        mainwindow.width = Screen.width / 2;
+        mainwindow.height = Screen.height / 2;
+        mainwindow.x = 0;
+        mainwindow.y = 0;
+        break;
       case Ticktimer.Ticking:
-        delayhide.start()
+        delayhide.start();
         //        mainwindow.opacity = 0.8
-        mainwindow.width = 300
-        mainwindow.height = 300
-        mainwindow.x = Screen.width - 100
-        mainwindow.y = Screen.height - 100
-        break
+        mainwindow.width = 300;
+        mainwindow.height = 300;
+        mainwindow.x = Screen.width - 100;
+        mainwindow.y = Screen.height - 100;
+        break;
       case Ticktimer.Timeout:
-        mainwindow.visible_lock = true
+        mainwindow.visible_lock = true;
         //        mainwindow.opacity = 1
-        mainwindow.width = Screen.width
-        mainwindow.height = Screen.height
-        mainwindow.x = 0
-        mainwindow.y = 0
-        break
+        mainwindow.width = Screen.width;
+        mainwindow.height = Screen.height;
+        mainwindow.x = 0;
+        mainwindow.y = 0;
+        break;
       default:
-        break
+        break;
       }
     }
 
     function onWarnClose(sec) {
       if (ticktimer.timer_state === Ticktimer.Ticking) {
-        noti.visible = true
+        noti.visible = true;
       } else {
-        noti.visible = false
+        noti.visible = false;
       }
     }
   }
 
-  onActiveChanged: {
+  onActiveChanged:
 
-    //    console.debug("activeChanged", active)
+  //    console.debug("activeChanged", active)
+  {
   }
 
   RoundProgButton {
@@ -83,9 +84,10 @@ Window {
 
   HoverHandler {
     id: hoverdetector
-    onHoveredChanged: {
+    onHoveredChanged:
 
-      //      console.debug("hoverChanged")
+    //      console.debug("hoverChanged")
+    {
     }
   }
 
@@ -94,7 +96,7 @@ Window {
     interval: 3000
     repeat: false
     onTriggered: {
-      mainwindow.visible_lock = false
+      mainwindow.visible_lock = false;
     }
   }
 
@@ -102,14 +104,14 @@ Window {
     target: trayicon
 
     function onActivated(reason) {
-      console.debug("trayicon:", reason)
+      console.debug("trayicon:", reason);
       switch (reason) {
       case SystemTrayIcon.Trigger:
-        mainwindow.visible_lock = true
-        delayhide.start()
-        break
+        mainwindow.visible_lock = true;
+        delayhide.start();
+        break;
       default:
-        break
+        break;
       }
     }
   }
