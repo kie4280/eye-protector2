@@ -11,15 +11,21 @@ Kirigami.FormLayout {
 
     QQC2.SpinBox {
       id: work_spin
-      Kirigami.FormData.label: i18n("Work time:")
+      from: 1
+      to: 24 * 60 * 60
+      Kirigami.FormData.label: i18n("Work time (seconds):")
     }
     QQC2.SpinBox {
       id: rest_spin
-      Kirigami.FormData.label: i18n("Rest time:")
+      from: 1
+      to: 24 * 60 * 60
+      Kirigami.FormData.label: i18n("Rest time (seconds):")
     }
     QQC2.SpinBox {
       id: postpone_spin
-      Kirigami.FormData.label: i18n("Postpone time:")
+      from: 1
+      to: 24 * 60 * 60
+      Kirigami.FormData.label: i18n("Postpone time (seconds):")
     }
 }
 

@@ -4,10 +4,10 @@
 
     <group name="General">
         <entry name="rest_time_sec" type="Int">
-            <default>5</default>
+            <default>300</default>
         </entry>
         <entry name="work_time_sec" type="Int">
-            <default>10</default>
+            <default>1200</default>
         </entry>
         <entry name="postpone_time_sec" type="Int">
             <default>300</default>

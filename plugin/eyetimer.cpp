@@ -35,12 +35,16 @@ void EyeTimer::start() {
 void EyeTimer::set_rest_time(int sec) {
   tick_timer->stop();
   rest_time = sec;
+  internal_counter = work_time;
+  timer_state = TIMER_STATE::Pause;
   tick_timer->start();
 }
 
 void EyeTimer::set_work_time(int sec) {
   tick_timer->stop();
   work_time = sec;
+  internal_counter = work_time;
+  timer_state = TIMER_STATE::Pause;
   tick_timer->start();
 }
 
