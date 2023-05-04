@@ -11,8 +11,10 @@ class EyeTimer : public QObject {
 
   Q_OBJECT
 
-  Q_PROPERTY(int rest_time MEMBER rest_time NOTIFY rest_timeChanged)
-  Q_PROPERTY(int work_time MEMBER work_time NOTIFY work_timeChanged)
+  Q_PROPERTY(int rest_time MEMBER rest_time WRITE set_rest_time NOTIFY
+                 rest_timeChanged)
+  Q_PROPERTY(int work_time MEMBER work_time WRITE set_work_time NOTIFY
+                 work_timeChanged)
   Q_PROPERTY(int timer_state MEMBER timer_state NOTIFY timer_stateChanged)
 
 public:
@@ -24,12 +26,12 @@ public:
   QTimer *tick_timer;
   EyeTimer(int duration = 10, int resting = 5);
   ~EyeTimer();
+  void set_rest_time(int);
+  void set_work_time(int);
 
 public slots:
   void pause();
   void start();
-  // void read_json();
-  // void save_json(QJsonObject);
 
 private slots:
   void eyetimer_tick();

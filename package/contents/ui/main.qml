@@ -30,29 +30,12 @@ Item {
     function onTimer_stateChanged() {
       switch (eyetimer.timer_state) {
       case Plugin.Eyetimer.Pause:
-        mainwindow.visible_lock = true;
-        delayhide.stop();
-        //        mainwindow.opacity = 1
-        mainwindow.width = Screen.width / 2;
-        mainwindow.height = Screen.height / 2;
-        mainwindow.x = 0;
-        mainwindow.y = 0;
+        plasmoid.expanded = true;
         break;
       case Plugin.Eyetimer.Ticking:
-        delayhide.start();
-        //        mainwindow.opacity = 0.8
-        mainwindow.width = 300;
-        mainwindow.height = 300;
-        mainwindow.x = Screen.width - 100;
-        mainwindow.y = Screen.height - 100;
         break;
       case Plugin.Eyetimer.Timeout:
-        mainwindow.visible_lock = true;
-        //        mainwindow.opacity = 1
-        mainwindow.width = Screen.width;
-        mainwindow.height = Screen.height;
-        mainwindow.x = 0;
-        mainwindow.y = 0;
+        plasmoid.expanded = true;
         break;
       default:
         break;
@@ -72,6 +55,8 @@ Item {
 
   Plugin.Eyetimer {
     id: eyetimer
+    work_time: plasmoid.configuration.work_time_sec
+    rest_time: plasmoid.configuration.rest_time_sec
   }
 
   Plasmoid.fullRepresentation: Item {

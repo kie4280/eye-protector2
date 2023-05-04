@@ -32,32 +32,17 @@ void EyeTimer::start() {
   emit timer_stateChanged();
 }
 
-// void EyeTimer::read_json() {
-//   QFile readfile(QStringLiteral("eye-protector-conf.json"));
-//   if (!readfile.exists()) {
-//     qInfo("config file doesn't exist");
-//     QJsonObject ob;
-//     ob["rest_sec"] = 300;
-//     ob["use_sec"] = 1200;
-//     ob["postpone_sec"] = 300;
-//     settings_json.setObject(ob);
-//     return;
-//   } else if (!readfile.open(QIODevice::ReadOnly)) {
-//     qWarning("cannot read config file");
-//     return;
-//   }
+void EyeTimer::set_rest_time(int sec) {
+  tick_timer->stop();
+  rest_time = sec;
+  tick_timer->start();
+}
 
-//   settings_json.fromJson(readfile.readAll());
-// }
-
-// void EyeTimer::save_json(QJsonObject obj) {
-//   QFile savefile(QStringLiteral("eye-protector-conf.json"));
-//   if (!savefile.open(QIODevice::WriteOnly)) {
-//     qWarning("Cannot save file");
-//     return;
-//   }
-//   savefile.write(QJsonDocument(obj).toJson());
-// }
+void EyeTimer::set_work_time(int sec) {
+  tick_timer->stop();
+  work_time = sec;
+  tick_timer->start();
+}
 
 void EyeTimer::eyetimer_tick() {
 
@@ -95,4 +80,3 @@ void EyeTimer::eyetimer_tick() {
   }
   emit tick(internal_counter);
 }
-
