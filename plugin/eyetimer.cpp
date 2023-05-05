@@ -51,7 +51,6 @@ void EyeTimer::set_work_time(int sec) {
 void EyeTimer::eyetimer_tick() {
 
   switch (timer_state) {
-
   case TIMER_STATE::Pause:
 
     if (internal_counter == work_time) {
@@ -62,7 +61,7 @@ void EyeTimer::eyetimer_tick() {
     break;
   case TIMER_STATE::Ticking:
     --internal_counter;
-    if (internal_counter <= 0) {
+    if (internal_counter < 0) {
       timer_state = TIMER_STATE::Timeout;
       internal_counter = rest_time;
       emit timer_stateChanged();
@@ -73,7 +72,7 @@ void EyeTimer::eyetimer_tick() {
     break;
   case TIMER_STATE::Timeout:
     --internal_counter;
-    if (internal_counter <= 0) {
+    if (internal_counter < 0) {
       timer_state = TIMER_STATE::Pause;
       internal_counter = work_time;
       emit timer_stateChanged();
@@ -82,5 +81,6 @@ void EyeTimer::eyetimer_tick() {
   default:
     break;
   }
+
   emit tick(internal_counter);
 }

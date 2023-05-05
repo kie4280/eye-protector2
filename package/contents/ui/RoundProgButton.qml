@@ -14,8 +14,8 @@ Item {
   // General
   property bool roundCap: true
   property int startAngle: -90
-  property int maxValue: 0
-  property int value: 0
+  property int maxValue: 1
+  property real value: 0
   property int state: 0
   property int radius: 200
   property int samples: 4
@@ -27,12 +27,6 @@ Item {
   property color progressColor: "#55aaff"
   property int progressWidth: 16
 
-  // unfinished animation
-  Behavior on value  {
-    SmoothedAnimation {
-      velocity: 100
-    }
-  }
 
   Shape {
     id: shape
@@ -64,13 +58,21 @@ Item {
       strokeWidth: progress.progressWidth
       capStyle: progress.roundCap ? ShapePath.RoundCap : ShapePath.FlatCap
 
+      property real val: progress.value
+
+      Behavior on val  {
+        PropertyAnimation {
+          duration: 1000
+          easing.type: Easing.Linear
+        }
+      }
       PathAngleArc {
         radiusX: (progress.width / 2) - (progress.progressWidth / 2)
         radiusY: (progress.height / 2) - (progress.progressWidth / 2)
         centerX: progress.width / 2
         centerY: progress.height / 2
         startAngle: progress.startAngle
-        sweepAngle: (360 / progress.maxValue * progress.value)
+        sweepAngle: (360 / progress.maxValue * path.val)
       }
     }
   }
