@@ -19,6 +19,15 @@ Item {
   }
   property int value: eyetimer.work_time
   property int state: eyetimer.timer_state
+  property bool autohide: false
+    
+  Plasmoid.hideOnWindowDeactivate: root.autohide
+
+  Plugin.Eyetimer {
+    id: eyetimer
+    work_time: plasmoid.configuration.work_time_sec
+    rest_time: plasmoid.configuration.rest_time_sec
+  }
 
   Connections {
     target: eyetimer
@@ -31,11 +40,14 @@ Item {
       switch (eyetimer.timer_state) {
       case Plugin.Eyetimer.Pause:
         plasmoid.expanded = true;
+        root.autohide = false
         break;
       case Plugin.Eyetimer.Ticking:
+        root.autohide = true
         break;
       case Plugin.Eyetimer.Timeout:
         plasmoid.expanded = true;
+        root.autohide = false
         break;
       default:
         break;
@@ -53,16 +65,11 @@ Item {
     }
   }
 
-  Plugin.Eyetimer {
-    id: eyetimer
-    work_time: plasmoid.configuration.work_time_sec
-    rest_time: plasmoid.configuration.rest_time_sec
-  }
 
   Plasmoid.fullRepresentation: Item {
     id: fullroot
     width: 300 * PlasmaCore.Units.devicePixelRatio
-    height: 300 * PlasmaCore.Units.devicePixelRatio
+    height: 200 * PlasmaCore.Units.devicePixelRatio
 
     RoundProgButton {
       id: rpbutt
