@@ -18,7 +18,7 @@ Item {
       return eyetimer.rest_time;
     }
   }
-  property int value: eyetimer.work_time
+  property int value: eyetimer.counter_value
   property int state: eyetimer.timer_state
   property bool autohide: false
     
@@ -34,7 +34,6 @@ Item {
     target: eyetimer
 
     function onTick(sec) {
-      root.value = sec;
     }
 
     function onTimer_stateChanged() {

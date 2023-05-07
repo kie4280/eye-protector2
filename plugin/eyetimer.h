@@ -2,7 +2,6 @@
 #define TIMER_H
 
 // #include <QJsonDocument>
-#include <QJsonObject>
 #include <QObject>
 #include <QQmlEngine>
 #include <QTimer>
@@ -17,6 +16,8 @@ class EyeTimer : public QObject {
                  work_timeChanged)
   Q_PROPERTY(int timer_state MEMBER timer_state NOTIFY timer_stateChanged)
 
+  Q_PROPERTY(int counter_value READ get_internal_counter NOTIFY tick)
+
 public:
   enum TIMER_STATE { Pause, Ticking, Recharging, Timeout };
 
@@ -28,6 +29,7 @@ public:
   ~EyeTimer();
   void set_rest_time(int);
   void set_work_time(int);
+  int get_internal_counter() const;
 
 public slots:
   void toggle();
@@ -36,7 +38,7 @@ private slots:
   void eyetimer_tick();
 
 signals:
-  void tick(int seconds);
+  void tick();
   void warnClose(int seconds);
   void rest_timeChanged();
   void work_timeChanged();

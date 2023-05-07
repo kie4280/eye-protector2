@@ -1,7 +1,6 @@
 #include "eyetimer.h"
 #include <QCoreApplication>
 #include <QDebug>
-#include <QFile>
 #include <QQuickView>
 
 EyeTimer::EyeTimer(int duration, int resting)
@@ -56,6 +55,10 @@ void EyeTimer::set_work_time(int sec) {
   tick_timer->start();
 }
 
+int EyeTimer::get_internal_counter() const {
+  return internal_counter;
+}
+
 void EyeTimer::eyetimer_tick() {
 
   switch (timer_state) {
@@ -94,5 +97,5 @@ void EyeTimer::eyetimer_tick() {
     break;
   }
 
-  emit tick(internal_counter);
+  emit tick();
 }
