@@ -15,7 +15,8 @@ Item {
   property bool roundCap: true
   property int startAngle: -90
   property int maxValue: 1
-  property real value: 0
+  property int value: 0
+  property real barVal: maxValue
   property int state: 0
   property int radius: 200
   property int samples: 4
@@ -27,6 +28,42 @@ Item {
   property color progressColor: "#55aaff"
   property int progressWidth: 16
 
+  onStateChanged: {
+    barAnimation.stop();
+    switch(progress.state) {
+      case Plugin.Eyetimer.Pause:
+        progress.barVal = progress.maxValue;
+        break;
+      case Plugin.Eyetimer.Recharging:
+        if (progress.value != progress.maxValue) {
+          barAnimation.from = progress.value;
+          barAnimation.to = progress.maxValue;
+          barAnimation.duration = (progress.maxValue - progress.value) * 1000;
+          barAnimation.start();
+        }
+        break;
+      case Plugin.Eyetimer.Ticking:
+        barAnimation.from = progress.value;
+        barAnimation.to = 0;
+        barAnimation.duration = (progress.value) * 1000;
+        barAnimation.start();
+        break;
+      case Plugin.Eyetimer.Timeout:
+        barAnimation.from = progress.maxValue;
+        barAnimation.to = 0;
+        barAnimation.duration = (progress.maxValue) * 1000;
+        barAnimation.start();
+        break;
+    }
+  }
+
+  PropertyAnimation {
+    id: barAnimation
+    target: progress
+    property: "barVal"
+    running: false
+    easing.type: Easing.Linear
+  }
 
   Shape {
     id: shape
@@ -58,21 +95,14 @@ Item {
       strokeWidth: progress.progressWidth
       capStyle: progress.roundCap ? ShapePath.RoundCap : ShapePath.FlatCap
 
-      property real val: progress.value
 
-      Behavior on val  {
-        PropertyAnimation {
-          duration: 1000
-          easing.type: Easing.Linear
-        }
-      }
       PathAngleArc {
         radiusX: (progress.width / 2) - (progress.progressWidth / 2)
         radiusY: (progress.height / 2) - (progress.progressWidth / 2)
         centerX: progress.width / 2
         centerY: progress.height / 2
         startAngle: progress.startAngle
-        sweepAngle: (360 / progress.maxValue * path.val)
+        sweepAngle: (360 / progress.maxValue * progress.barVal)
       }
     }
   }
@@ -98,6 +128,7 @@ Item {
     property string second_text: {
       switch (progress.state) {
       case Plugin.Eyetimer.Pause:
+      case Plugin.Eyetimer.Recharging:
       case Plugin.Eyetimer.Ticking:
       case Plugin.Eyetimer.Timeout:
         return sec2time(progress.value);
@@ -109,6 +140,7 @@ Item {
     property string state_text: {
       switch (progress.state) {
       case Plugin.Eyetimer.Pause:
+      case Plugin.Eyetimer.Recharging:
         return qsTr("Start");
       case Plugin.Eyetimer.Ticking:
         return qsTr("Pause");
@@ -167,11 +199,7 @@ Item {
     }
 
     onClicked: {
-      if (progress.state === Plugin.Eyetimer.Pause) {
-        eyetimer.start();
-      } else if (progress.state === Plugin.Eyetimer.Ticking) {
-        eyetimer.pause();
-      }
+      eyetimer.toggle();
     }
   }
 }

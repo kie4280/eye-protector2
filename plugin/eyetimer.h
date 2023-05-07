@@ -18,7 +18,7 @@ class EyeTimer : public QObject {
   Q_PROPERTY(int timer_state MEMBER timer_state NOTIFY timer_stateChanged)
 
 public:
-  enum TIMER_STATE { Pause, Ticking, Timeout };
+  enum TIMER_STATE { Pause, Ticking, Recharging, Timeout };
 
   Q_ENUM(TIMER_STATE)
 
@@ -30,8 +30,7 @@ public:
   void set_work_time(int);
 
 public slots:
-  void pause();
-  void start();
+  void toggle();
 
 private slots:
   void eyetimer_tick();

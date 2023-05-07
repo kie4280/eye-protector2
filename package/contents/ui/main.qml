@@ -12,6 +12,7 @@ Item {
     switch (eyetimer.timer_state) {
     case Plugin.Eyetimer.Ticking:
     case Plugin.Eyetimer.Pause:
+    case Plugin.Eyetimer.Recharging:
       return eyetimer.work_time;
     case Plugin.Eyetimer.Timeout:
       return eyetimer.rest_time;
@@ -39,6 +40,7 @@ Item {
     function onTimer_stateChanged() {
       switch (eyetimer.timer_state) {
       case Plugin.Eyetimer.Pause:
+      case Plugin.Eyetimer.Recharging:
         plasmoid.expanded = true;
         root.autohide = false
         break;
@@ -55,11 +57,9 @@ Item {
     }
 
     function onWarnClose(sec) {
-      if (eyetimer.timer_state === Plugin.Eyetimer.Ticking)
-      /* noti.visible = true */
-      {
+      if (eyetimer.timer_state === Plugin.Eyetimer.Ticking) {
+
       } else {
-        /* noti.visible = false */
         plasmoid.expanded = true;
       }
     }

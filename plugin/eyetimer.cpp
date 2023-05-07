@@ -19,17 +19,25 @@ EyeTimer::~EyeTimer() {
   delete tick_timer;
 }
 
-void EyeTimer::pause() {
-  timer_state = TIMER_STATE::Pause;
-  tick_timer->start();
-  emit timer_stateChanged();
-}
-
-void EyeTimer::start() {
-  timer_state = TIMER_STATE::Ticking;
-  if (!tick_timer->isActive())
-    tick_timer->start();
-  emit timer_stateChanged();
+void EyeTimer::toggle() {
+  switch (timer_state) {
+  case TIMER_STATE::Pause:
+  case TIMER_STATE::Recharging:
+    timer_state = TIMER_STATE::Ticking;
+    if (!tick_timer->isActive()) {
+      tick_timer->start();
+    }
+    emit timer_stateChanged();
+    break;
+  case TIMER_STATE::Ticking:
+    timer_state = TIMER_STATE::Recharging;
+    emit timer_stateChanged();
+    break;
+  case TIMER_STATE::Timeout:
+    break;
+  default:
+    break;
+  }
 }
 
 void EyeTimer::set_rest_time(int sec) {
@@ -51,10 +59,13 @@ void EyeTimer::set_work_time(int sec) {
 void EyeTimer::eyetimer_tick() {
 
   switch (timer_state) {
-  case TIMER_STATE::Pause:
+  case TIMER_STATE::Recharging:
 
-    if (internal_counter == work_time) {
+    if (internal_counter >= work_time) {
       tick_timer->stop();
+      internal_counter = work_time;
+      timer_state = TIMER_STATE::Pause;
+      emit timer_stateChanged();
     } else {
       ++internal_counter;
     }
@@ -75,6 +86,7 @@ void EyeTimer::eyetimer_tick() {
     if (internal_counter < 0) {
       timer_state = TIMER_STATE::Pause;
       internal_counter = work_time;
+      tick_timer->stop();
       emit timer_stateChanged();
     }
     break;
