@@ -8,7 +8,6 @@ Item {
   id: progress
   implicitWidth: radius
   implicitHeight: radius
-  anchors.centerIn: parent
 
   // Properties
   // General

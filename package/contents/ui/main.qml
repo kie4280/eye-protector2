@@ -1,13 +1,16 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.11
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
 import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.kirigami 2.4 as Kirigami
 import com.github.kie4280.eyeprotector2.plugin 1.0 as Plugin
 
 Item {
   id: root
+
   property int maxValue: {
     switch (eyetimer.timer_state) {
     case Plugin.Eyetimer.Ticking:
@@ -18,8 +21,8 @@ Item {
       return eyetimer.rest_time;
     }
   }
-  property int value: eyetimer.counter_value
-  property int state: eyetimer.timer_state
+  property alias value: eyetimer.counter_value
+  property alias state: eyetimer.timer_state
   property bool autohide: false
     
   Plasmoid.hideOnWindowDeactivate: root.autohide
@@ -59,7 +62,7 @@ Item {
       if (eyetimer.timer_state === Plugin.Eyetimer.Ticking) {
 
       } else {
-        plasmoid.expanded = true;
+
       }
     }
   }
@@ -67,14 +70,28 @@ Item {
 
   Plasmoid.fullRepresentation: Item {
     id: fullroot
-    width: 300 * PlasmaCore.Units.devicePixelRatio
-    height: 200 * PlasmaCore.Units.devicePixelRatio
+    Layout.preferredWidth: 300 * PlasmaCore.Units.devicePixelRatio
+    Layout.preferredHeight: 300 * PlasmaCore.Units.devicePixelRatio
 
+    CheckBox {
+      id: enabledCheck
+      checked: true
+      text: qsTr("Enabled")
+      onCheckedChanged: {
+        eyetimer.reset();
+        root.autohide = !checked;
+      }
+    }
     RoundProgButton {
       id: rpbutt
       maxValue: root.maxValue
+      anchors.top: enabledCheck.bottom
+      anchors.topMargin: 30
+      anchors.horizontalCenter: parent.horizontalCenter
       value: root.value
       state: root.state
+      visible: enabledCheck.checked
+      radius: 200
     }
   }
 

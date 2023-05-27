@@ -39,6 +39,13 @@ void EyeTimer::toggle() {
   }
 }
 
+void EyeTimer::reset() {
+  tick_timer->stop();
+  timer_state = TIMER_STATE::Pause;
+  internal_counter = work_time;
+  emit timer_stateChanged();
+}
+
 void EyeTimer::set_rest_time(int sec) {
   tick_timer->stop();
   rest_time = sec;
