@@ -1,12 +1,14 @@
+# Motivation
+
+Protect your eyes!! Without them you cannot see!!
 
 # Screenshots
 
 ## Widget view
-![](https://i.imgur.com/CpRBOHQ.png)
+![](https://i.imgur.com/lxajTMz.png)
 
 ## Config view
-![](https://i.imgur.com/9SbGOQf.png)
-
+![](https://i.imgur.com/97HP1ki.png)
 
 # Building and Installing
 
