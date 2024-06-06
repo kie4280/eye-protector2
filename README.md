@@ -1,3 +1,7 @@
+# Updates
+
+Unfortunately, this widget isn't compatible with KDE 6 so is currently broken. 
+
 # Motivation
 
 Protect your eyes!! Without them you cannot see!!
