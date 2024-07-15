@@ -16,52 +16,56 @@ Item {
     case Plugin.Eyetimer.Ticking:
     case Plugin.Eyetimer.Pause:
     case Plugin.Eyetimer.Recharging:
-      return eyetimer.work_time;
+    return eyetimer.work_time;
     case Plugin.Eyetimer.Timeout:
-      return eyetimer.rest_time;
-    }
+    return eyetimer.rest_time;
   }
-  property alias value: eyetimer.counter_value
+}
+property alias value: eyetimer.counter_value
   property alias state: eyetimer.timer_state
-  property bool autohide: false
-    
-  Plasmoid.hideOnWindowDeactivate: root.autohide
+    property bool autohide: false
 
-  Plugin.Eyetimer {
-    id: eyetimer
-    work_time: plasmoid.configuration.work_time_sec
-    rest_time: plasmoid.configuration.rest_time_sec
-  }
+      Plasmoid.hideOnWindowDeactivate: root.autohide
 
-  Connections {
-    target: eyetimer
-
-    function onTick(sec) {
-    }
-
-    function onTimer_stateChanged() {
-      switch (eyetimer.timer_state) {
-      case Plugin.Eyetimer.Pause:
-      case Plugin.Eyetimer.Recharging:
-        plasmoid.expanded = true;
-        root.autohide = false
-        break;
-      case Plugin.Eyetimer.Ticking:
-        root.autohide = true
-        break;
-      case Plugin.Eyetimer.Timeout:
-        plasmoid.expanded = true;
-        root.autohide = false
-        break;
-      default:
-        break;
+      Plugin.Eyetimer {
+        id: eyetimer
+        work_time: plasmoid.configuration.work_time_sec
+        rest_time: plasmoid.configuration.rest_time_sec
       }
-    }
 
-    function onWarnClose(sec) {
-      if (eyetimer.timer_state === Plugin.Eyetimer.Ticking) {
+      Connections {
+        target: eyetimer
 
-      } else {
+        function onTick(sec)
+        {
+        }
+
+        function onTimer_stateChanged()
+        {
+          switch (eyetimer.timer_state) {
+          case Plugin.Eyetimer.Pause:
+          case Plugin.Eyetimer.Recharging:
+          plasmoid.expanded = true;
+          root.autohide = false
+          break;
+          case Plugin.Eyetimer.Ticking:
+          root.autohide = true
+          break;
+          case Plugin.Eyetimer.Timeout:
+          plasmoid.expanded = true;
+          root.autohide = false
+          break;
+          default:
+          break;
+        }
+      }
+
+      function onWarnClose(sec)
+      {
+        if (eyetimer.timer_state === Plugin.Eyetimer.Ticking)
+        {
+
+        } else {
 
       }
     }
@@ -96,10 +100,10 @@ Item {
   }
 
   /* Plasmoid.compactRepresentation: Item { */
-  /*   id: compactroot */
+  /* id: compactroot */
 
-  /*   Text { */
-  /*     text: qsTr("sdklfsjf") */
-  /*   } */
+  /* Text { */
+  /* text: qsTr("sdklfsjf") */
+  /* } */
   /* } */
 }

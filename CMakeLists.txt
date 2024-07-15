@@ -10,14 +10,16 @@ include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(FeatureSummary)
 
-find_package(KF5 REQUIRED COMPONENTS
-    Plasma
-)
 
-find_package(Qt5 CONFIG REQUIRED COMPONENTS
+# find_package(KF6 REQUIRED COMPONENTS
+#     Plasma
+# )
+
+find_package(Plasma 6.1 REQUIRED)
+
+find_package(Qt6 CONFIG REQUIRED COMPONENTS
     Core
     Quick
-    Widgets
     Qml
 )
 
