@@ -73,3 +73,5 @@ Thumbs.db
 build/**
 *.user
 .cache/**
+
+.vscode
