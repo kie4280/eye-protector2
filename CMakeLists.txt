@@ -24,5 +24,4 @@ add_subdirectory(plugin)
 # TODO: adapt "org.kde.plasma" here & elsewhere if needed (see README)
 plasma_install_package(package com.github.kie4280.eyeprotector2)
 
-
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
