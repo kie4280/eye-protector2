@@ -1,6 +1,7 @@
 # Updates
 
-Unfortunately, this widget isn't compatible with KDE 6 so is currently broken. 
+- [20240606] Unfortunately, this widget isn't compatible with KDE 6 so is currently broken. 
+- [20240904] Update: This widget is currently working in Plaasma 6.1.4 😃
 
 # Motivation
 
