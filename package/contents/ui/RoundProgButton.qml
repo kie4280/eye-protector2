@@ -1,7 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Shapes 1.15
-import com.github.kie4280.eyeprotector2.plugin 1.0 as Plugin
+import com.github.kie4280.eyeprotector2 1.0 as Plugin
 
 Item {
   // copied from https://github.com/Wanderson-Magalhaes/Circular_ProgressBar

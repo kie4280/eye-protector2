@@ -11,9 +11,9 @@
     "Icon": "clock",
     "Id": "com.github.kie4280.eyeprotector2",
     "Name": "eyeprotector",
-    "KPackageStructure": "Plasma/Applet",
-    "Version": "0.1",
+    "Version": "2.1",
     "Website": "https://github.com/kie4280/eyeprotector2"
   },
+  "KPackageStructure": "Plasma/Applet",
   "X-Plasma-API-Minimum-Version": "6.0"
 }

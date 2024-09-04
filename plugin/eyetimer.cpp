@@ -9,11 +9,12 @@ EyeTimer::EyeTimer(int duration, int resting)
   tick_timer->setTimerType(Qt::CoarseTimer);
   tick_timer->setInterval(1000);
   internal_counter = work_time;
-  connect(tick_timer, &QTimer::timeout, this, &EyeTimer::eyetimer_tick);
+  QObject::connect(tick_timer, &QTimer::timeout, this, &EyeTimer::eyetimer_tick);
+
 }
 
 EyeTimer::~EyeTimer() {
-  disconnect(tick_timer, &QTimer::timeout, this, &EyeTimer::eyetimer_tick);
+  QObject::disconnect(tick_timer, &QTimer::timeout, this, &EyeTimer::eyetimer_tick);
   tick_timer->stop();
   delete tick_timer;
 }
