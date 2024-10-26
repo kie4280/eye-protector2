@@ -1,11 +1,12 @@
 # Updates
 
 - [20240606] Unfortunately, this widget isn't compatible with KDE 6 so is currently broken. 
-- [20240904] Update: This widget is currently working in Plaasma 6.1.4 😃
+- [20240904] Update: This widget is currently installable in Plasma 6.1.4 😃. However, There is a bug that prevents the widget from showing when the countdown expires. More Plasma API digging is necessary!
 
 # Motivation
 
 Protect your eyes!! Without them you cannot see!!
+Also, this widget functions as a pomodoro timer. If you know the pomodoro technique, you would definitely like it.
 
 # Screenshots
 
