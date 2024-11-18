@@ -2,9 +2,8 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.11
-import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.4 as Kirigami
 import com.github.kie4280.eyeprotector2 1.0 as Plugin
 
@@ -42,14 +41,14 @@ PlasmoidItem {
             switch (eyetimer.timer_state) {
             case Plugin.Eyetimer.Pause:
             case Plugin.Eyetimer.Recharging:
-                plasmoid.expanded = true
+                root.expanded = true
                 root.autohide = false
                 break
             case Plugin.Eyetimer.Ticking:
                 root.autohide = true
                 break
             case Plugin.Eyetimer.Timeout:
-                plasmoid.expanded = true
+                root.expanded = true
                 root.autohide = false
                 break
             default:
@@ -68,8 +67,8 @@ PlasmoidItem {
 
     fullRepresentation: Item {
         id: fullroot
-        Layout.preferredWidth: 300
-        Layout.preferredHeight: 300.
+        Layout.preferredWidth: 300 * PlasmaCore.devicePixelRatio
+        Layout.preferredHeight: 300.* PlasmaCore.devicePixelRatio
 
         CheckBox {
             id: enabledCheck

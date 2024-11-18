@@ -2,6 +2,7 @@
 
 - [20240606] Unfortunately, this widget isn't compatible with KDE 6 so is currently broken. 
 - [20240904] Update: This widget is currently installable in Plasma 6.1.4 😃. However, There is a bug that prevents the widget from showing when the countdown expires. More Plasma API digging is necessary!
+- [20241118] Update: This widget is currently fully functional. It can popup when the time expires!
 
 # Motivation
 
